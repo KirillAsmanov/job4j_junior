@@ -2,6 +2,9 @@ package iterator;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
 /**
  * 5.1.1. Итератор для двухмерного массива int[][][#281937]
  * @author Kirill Asmanov
@@ -18,24 +21,24 @@ public class MatrixIterator implements Iterator<Integer> {
 
     @Override
     public boolean hasNext() {
-        boolean cellIsOutOfRange = cell >= data[row].length;
-        boolean rowIsLast = row == data.length - 1;
-        boolean cellsAreEmpty = data[row].length == 0;
+        Supplier<Boolean> cellIsOutOfRange = () -> this.cell >= this.data[row].length;
+        Supplier<Boolean> rowIsLast = () -> this.row == this.data.length - 1;
+        Supplier<Boolean> cellsAreEmpty = () -> this.data[row].length == 0;
 
-        return !(rowIsLast && (cellsAreEmpty || cellIsOutOfRange));
+        while (!rowIsLast.get() && cellsAreEmpty.get()) {
+            row++;
+        }
+
+        return !(rowIsLast.get() && (cellsAreEmpty.get() || cellIsOutOfRange.get()));
     }
 
     @Override
     public Integer next() {
-             // row isn't last AND cells are empty
-        while (row != data.length - 1 && data[row].length == 0) {
-            row++;
-        }
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
         int rsl;
-            // cell is last
+            // cell is last in row
         if (cell == data[row].length - 1) {
             rsl =  data[row++][cell];
             cell = 0;

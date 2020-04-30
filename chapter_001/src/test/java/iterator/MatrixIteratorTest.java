@@ -27,12 +27,13 @@ public class MatrixIteratorTest {
     }
 
     @Test
-    public void whenFirstEmptyThenHashNext() {
+    public void whenAllAreEmptyExceptFirst() {
         int[][] in = {
-                {}, {1}
+                {1}, {}, {}, {}
         };
         MatrixIterator it = new MatrixIterator(in);
-        assertThat(it.hasNext(), is(true));
+        it.next();
+        assertThat(it.hasNext(), is(false));
     }
 
     @Test
