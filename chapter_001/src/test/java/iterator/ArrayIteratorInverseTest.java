@@ -2,6 +2,7 @@ package iterator;
 
 import org.junit.Test;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -20,7 +21,7 @@ public class ArrayIteratorInverseTest {
 
     @Test
     public void whenReadSequence() {
-        ArrayIteratorInverse it = new ArrayIteratorInverse(
+        Iterator<Integer> it = new ArrayIteratorInverse(
                 new int[] {1, 2, 3}
         );
         assertThat(it.next(), is(3));
