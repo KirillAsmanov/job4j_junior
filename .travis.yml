@@ -2,6 +2,8 @@ language: java
 jdk:
   - openjdk14
 
+codecov: true
+
 sudo: false
 
 env:
