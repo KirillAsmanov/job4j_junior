@@ -15,7 +15,7 @@ public class SimpleArray<E> implements Iterable<E> {
     Object[] data;
     int position = 0;
 
-    public SimpleArray (Integer size) {
+    public SimpleArray(Integer size) {
         this.data = new Object[size];
     }
 
@@ -23,7 +23,7 @@ public class SimpleArray<E> implements Iterable<E> {
      * Добавляет элемент в первый пустой индекс
      * @param element добавляемый элемент
      */
-    public void add (E element) {
+    public void add(E element) {
         this.data[position++] = element;
     }
 
@@ -33,7 +33,7 @@ public class SimpleArray<E> implements Iterable<E> {
      * @return элемент
      * @throws IndexOutOfBoundsException - элемент с данным индексом не добавлен в массив
      */
-    public E get (int index) throws IndexOutOfBoundsException {
+    public E get(int index) throws IndexOutOfBoundsException {
         return (E) this.data[checkIndex(index)];
     }
 
@@ -43,7 +43,7 @@ public class SimpleArray<E> implements Iterable<E> {
      * @param element - заменяющий элемент
      * @throws IndexOutOfBoundsException - элемент с данным индексом не добавлен в массив
      */
-    public void set (int index, E element) throws IndexOutOfBoundsException {
+    public void set(int index, E element) throws IndexOutOfBoundsException {
         this.data[checkIndex(index)] = element;
     }
 
@@ -52,7 +52,7 @@ public class SimpleArray<E> implements Iterable<E> {
      * @param index индекс удаляемого элемента
      * @throws IndexOutOfBoundsException - элемент с данным индексом не добавлен в массив
      */
-    public void remove (int index) throws IndexOutOfBoundsException {
+    public void remove(int index) throws IndexOutOfBoundsException {
         System.arraycopy(this.data,
                 checkIndex(index) + 1,
                 this.data, checkIndex(index),
