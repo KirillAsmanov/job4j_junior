@@ -28,11 +28,11 @@ public class MemStoreTest {
     public void whenReplace() {
         assertTrue(store.replace("2", new User("6", "Пётр")));
         assertNull(store.findById("2"));
-        assertEquals(store.findById("6").getName(),"Пётр");
+        assertEquals(store.findById("6").getName(), "Пётр");
     }
 
     @Test
     public void findById() {
-        assertEquals(store.findById("3").getName(),"Иван");
+        assertEquals(store.findById("3").getName(), "Иван");
     }
 }

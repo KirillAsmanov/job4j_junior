@@ -25,11 +25,11 @@ public class MatrixIterator implements Iterator<Integer> {
         Supplier<Boolean> rowIsLast = () -> this.row == this.data.length - 1;
         Supplier<Boolean> cellsAreEmpty = () -> this.data[row].length == 0;
 
-        while (!rowIsLast.get() && cellsAreEmpty.get()) {
+        while (row < data.length && data[row].length == 0) {
             row++;
         }
 
-        return !(rowIsLast.get() && (cellsAreEmpty.get() || cellIsOutOfRange.get()));
+        return row < data.length && cell < data[row].length;
     }
 
     @Override
@@ -37,13 +37,10 @@ public class MatrixIterator implements Iterator<Integer> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        int rsl;
-            // cell is last in row
-        if (cell == data[row].length - 1) {
-            rsl =  data[row++][cell];
+        int rsl = data[row][cell++];
+        if (cell == data[row].length) {
+            row++;
             cell = 0;
-        } else {
-            rsl =  data[row][cell++];
         }
         return rsl;
     }

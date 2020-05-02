@@ -5,7 +5,7 @@ package generic;
  * @author Kirill Asmanov
  * @since 01.05.2020
  */
-public class User extends Base{
+public class User extends Base {
     private String name;
 
     public User(String id, String name) {

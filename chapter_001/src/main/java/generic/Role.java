@@ -5,7 +5,7 @@ package generic;
  * @author Kirill Asmanov
  * @since 01.05.2020
  */
-public class Role extends Base{
+public class Role extends Base {
     private String name;
 
     public Role(String id, String name) {
