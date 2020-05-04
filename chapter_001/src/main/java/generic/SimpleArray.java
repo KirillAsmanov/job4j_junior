@@ -53,10 +53,11 @@ public class SimpleArray<E> implements Iterable<E> {
      * @throws IndexOutOfBoundsException - элемент с данным индексом не добавлен в массив
      */
     public void remove(int index) throws IndexOutOfBoundsException {
+        checkIndex(index);
         System.arraycopy(this.data,
-                checkIndex(index) + 1,
-                this.data, checkIndex(index),
-                position - checkIndex(index)
+                index + 1,
+                this.data, index,
+                position - index
         );
         data[position - 1] = null;
         position--;
