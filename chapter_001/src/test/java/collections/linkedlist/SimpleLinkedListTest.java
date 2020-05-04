@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
@@ -75,6 +76,18 @@ public class SimpleLinkedListTest {
         simpleLinkedList.add("delete this");
         simpleLinkedList.remove(3);
         assertEquals("EXCEPTION", simpleLinkedList.get(3));
+    }
+
+    @Test (expected = NoSuchElementException.class)
+    public void whenRemoveFirstInEmptyList() {
+        SimpleLinkedList<String> emptyLinkedList = new SimpleLinkedList<>();
+        emptyLinkedList.removeFirst();
+    }
+
+    @Test (expected = NoSuchElementException.class)
+    public void whenRemoveLastInEmptyList() {
+        SimpleLinkedList<String> emptyLinkedList = new SimpleLinkedList<>();
+        emptyLinkedList.removeLast();
     }
 
     @Test
