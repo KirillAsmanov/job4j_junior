@@ -32,4 +32,29 @@ public class ForwardLinkedTest {
         Iterator<Integer> it = linked.iterator();
         assertThat(it.next(), is(2));
     }
+
+    @Test
+    public void whenDeleteLast() {
+        ForwardLinked<Integer> linked = new ForwardLinked<>();
+        linked.add(1);
+        linked.add(2);
+        linked.deleteLast();
+        Iterator<Integer> it = linked.iterator();
+        assertThat(it.next(), is(1));
+        assertThat(it.hasNext(), is(false));
+    }
+
+    @Test
+    public void whenAddOnTheHead() {
+        ForwardLinked<Integer> linked = new ForwardLinked<>();
+        linked.addOnHead(1);
+        linked.addOnHead(2);
+        Iterator<Integer> it = linked.iterator();
+        for (Integer i:linked
+             ) {
+            System.out.println(i);
+        }
+        assertThat(it.next(), is(2));
+        assertThat(it.next(), is(1));
+    }
 }

@@ -2,10 +2,22 @@ package collections.linkedlist;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
+/**
+ * Custom Forward Linked List
+ * @author Kirill Asmanov
+ * @since 05.05.2020
+ * @param <T> any type
+ */
 public class ForwardLinked<T> implements Iterable<T> {
+    /**
+     * Contains first node in list
+     */
     private Node<T> head;
 
+    /**
+     * Adds element on a tail of the list.
+     * @param value added element.
+     */
     public void add(T value) {
         Node<T> node = new Node<T>(value, null);
         if (head == null) {
@@ -19,6 +31,32 @@ public class ForwardLinked<T> implements Iterable<T> {
         tail.next = node;
     }
 
+    /**
+     * Adds element on the head of the list.
+     * @param value added element
+     */
+    public void addOnHead(T value) {
+        if (head == null) {
+            head = new Node<T>(value, null);
+        } else {
+            head = new Node<T>(value, head);
+        }
+    }
+
+    /**
+     * Returns element from the head of the list
+     * @return element
+     */
+    public T getFirst() {
+        if (head == null) {
+            throw new NoSuchElementException();
+        }
+        return head.value;
+    }
+
+    /**
+     * Deletes head element in list
+     */
     public void deleteFirst() {
         if (head == null) {
             throw new NoSuchElementException();
@@ -30,6 +68,24 @@ public class ForwardLinked<T> implements Iterable<T> {
         }
     }
 
+    /**
+     * Deletes last element in list
+     */
+    public void deleteLast() {
+        if (head == null) {
+            throw new NoSuchElementException();
+        }
+        Node<T> tail = head;
+        while (tail.next.next != null) {
+            tail = tail.next;
+        }
+        tail.next = null;
+    }
+
+    /**
+     * Creates and returns iterator to bypass this collection.
+     * @return iterator of collection
+     */
     @Override
     public Iterator<T> iterator() {
         return new Iterator<T>() {
@@ -52,6 +108,10 @@ public class ForwardLinked<T> implements Iterable<T> {
         };
     }
 
+    /**
+     * Node realise
+     * @param <T> any type
+     */
     private static class Node<T> {
         T value;
         Node<T> next;
