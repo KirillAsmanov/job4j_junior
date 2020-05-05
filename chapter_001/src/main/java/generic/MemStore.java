@@ -1,6 +1,7 @@
 package generic;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 /**
  * 5.2.2. Реализовать Store<T extends Base>[#281944]
@@ -18,21 +19,22 @@ public final class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public boolean replace(String id, T model) {
-        T found = findById(id);
-        if (found == null) {
+        int index = indexById(id);
+        if (index == -1) {
             return false;
         }
-        mem.set(mem.indexOf(found), model);
+        mem.set(index, model);
         return true;
     }
 
     @Override
     public boolean delete(String id) {
-        T found = findById(id);
-        if (found == null) {
+        int index = indexById(id);
+        if (index == -1) {
             return false;
         }
-        return mem.remove(found);
+        mem.remove(index);
+        return true;
     }
 
     @Override
@@ -41,5 +43,31 @@ public final class MemStore<T extends Base> implements Store<T> {
                 .filter((T e) -> e.getId().equals(id))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public int indexById(String id) {
+        int index = 0;
+        for (T t: mem) {
+            if (t.getId().equals(id)) {
+                return index;
+            }
+            index++;
+        }
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        MemStore<User> memStore = new MemStore<>();
+        User userFirst = new User("1", "Кирилл");
+        User userSecond = new User("2", "Катя");
+        User userThird = new User("3", "Иван");
+        memStore.add(userFirst);
+        memStore.add(userSecond);
+        memStore.add(userThird);
+        System.out.println(memStore.indexById("1"));
+        System.out.println(memStore.indexById("2"));
+        System.out.println(memStore.indexById("3"));
+        System.out.println(memStore.indexById("4"));
+
     }
 }

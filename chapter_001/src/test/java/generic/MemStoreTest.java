@@ -35,4 +35,19 @@ public class MemStoreTest {
     public void findById() {
         assertEquals(store.findById("3").getName(), "Иван");
     }
+
+    @Test
+    public void indexById() {
+        MemStore<User> memStore = new MemStore<>();
+        User userFirst = new User("1", "Кирилл");
+        User userSecond = new User("2", "Катя");
+        User userThird = new User("3", "Иван");
+        memStore.add(userFirst);
+        memStore.add(userSecond);
+        memStore.add(userThird);
+        assertEquals(0, memStore.indexById("1"));
+        assertEquals(1, memStore.indexById("2"));
+        assertEquals(2, memStore.indexById("3"));
+        assertEquals(-1, memStore.indexById("4"));
+    }
 }
