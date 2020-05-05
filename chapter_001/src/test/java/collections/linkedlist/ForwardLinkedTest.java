@@ -10,10 +10,10 @@ import static org.junit.Assert.*;
 
 public class ForwardLinkedTest {
     @Test(expected = NoSuchElementException.class)
-    public void whenDeleteFirst() {
+    public void whenDeleteLast() {
         ForwardLinked<Integer> linked = new ForwardLinked<>();
         linked.add(1);
-        linked.deleteFirst();
+        linked.deleteLast();
         linked.iterator().next();
     }
 
@@ -28,17 +28,17 @@ public class ForwardLinkedTest {
         ForwardLinked<Integer> linked = new ForwardLinked<>();
         linked.add(1);
         linked.add(2);
-        linked.deleteFirst();
+        linked.deleteLast();
         Iterator<Integer> it = linked.iterator();
         assertThat(it.next(), is(2));
     }
 
     @Test
-    public void whenDeleteLast() {
+    public void whenDeleteFirst() {
         ForwardLinked<Integer> linked = new ForwardLinked<>();
         linked.add(1);
         linked.add(2);
-        linked.deleteLast();
+        linked.deleteFirst();
         Iterator<Integer> it = linked.iterator();
         assertThat(it.next(), is(1));
         assertThat(it.hasNext(), is(false));
