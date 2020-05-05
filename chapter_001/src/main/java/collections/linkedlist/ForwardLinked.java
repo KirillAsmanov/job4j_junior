@@ -44,6 +44,16 @@ public class ForwardLinked<T> implements Iterable<T> {
     }
 
     /**
+     * Revert order of elements on list.
+     */
+    public void revert() {
+        for (T input : this) {
+            addOnHead(input);
+            input = null;
+        }
+    }
+
+    /**
      * Returns element from the head of the list
      * @return element
      */
