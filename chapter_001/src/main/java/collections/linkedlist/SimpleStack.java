@@ -3,7 +3,7 @@ package collections.linkedlist;
 import java.util.NoSuchElementException;
 
 /**
- * Custom Stack (FIFO)
+ * Custom Stack (LIFO)
  * @author Kirill Asmanov
  * @since 05.05.2020
  * @param <T> any type
@@ -15,13 +15,13 @@ public class SimpleStack<T> {
      * @return head element
      */
     public T pop() {
-        T firstElement = null;
+        T lastElement = null;
         try {
-            firstElement = linked.getFirst();
-            linked.deleteFirst();
+            lastElement = linked.getHead();
+            linked.deleteLast();
         } catch (NoSuchElementException ignored) {
         }
-        return firstElement;
+        return lastElement;
     }
 
     /**
