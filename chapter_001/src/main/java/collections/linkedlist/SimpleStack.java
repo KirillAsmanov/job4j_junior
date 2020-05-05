@@ -1,5 +1,6 @@
 package collections.linkedlist;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -8,19 +9,15 @@ import java.util.NoSuchElementException;
  * @since 05.05.2020
  * @param <T> any type
  */
-public class SimpleStack<T> {
+public class SimpleStack<T> implements Iterable<T> {
     private ForwardLinked<T> linked = new ForwardLinked<T>();
     /**
-     * Retrieves and removes the head of this queue, or returns null if this queue is empty.
+     * Retrieves and removes the head of this queue.
      * @return head element
      */
     public T pop() {
-        T lastElement = null;
-        try {
-            lastElement = linked.getHead();
-            linked.deleteLast();
-        } catch (NoSuchElementException ignored) {
-        }
+        T lastElement = linked.getHead();
+        linked.deleteLast();
         return lastElement;
     }
 
@@ -30,5 +27,10 @@ public class SimpleStack<T> {
      */
     public void push(T value) {
         linked.addOnHead(value);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return linked.iterator();
     }
 }

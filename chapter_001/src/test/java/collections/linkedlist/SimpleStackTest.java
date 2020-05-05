@@ -30,10 +30,4 @@ public class SimpleStackTest {
         stack.pop();
         assertThat(stack.pop(), is(1));
     }
-
-    @Test
-    public void whenPopOnEmptyQueue() {
-        SimpleStack<Integer> stack = new SimpleStack<>();
-        assertNull(stack.pop());
-    }
 }
