@@ -1,5 +1,6 @@
 package iterator;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 /**
@@ -13,17 +14,14 @@ public class Converter {
             /**
              * хранит ссылку на обьект текущего внутреннего итератора
              */
-            private Iterator<Integer> innerIterator;
+            private Iterator<Integer> innerIterator = Collections.emptyIterator();
 
             @Override
             public boolean hasNext() {
-                while (innerIterator == null || !innerIterator.hasNext()) {
-                    if (!iterators.hasNext()) {
-                        return false;
-                    }
+                while (iterators.hasNext() && !innerIterator.hasNext()) {
                     innerIterator = iterators.next();
                 }
-                return true;
+                return innerIterator.hasNext();
             }
 
             @Override
