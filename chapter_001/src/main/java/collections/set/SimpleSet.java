@@ -31,13 +31,25 @@ public class SimpleSet<E> implements Iterable<E> {
      * @return true if operation finish successfully / false if it doesn't
      */
     public boolean add(E value) {
-        for (E element : container) {
-            if (value.equals(element)) {
-                return false;
-            }
+        if (this.contains(value)) {
+            return false;
         }
         container.add(value);
         return true;
+    }
+
+    /**
+     * Checks are the container has the object
+     * @param value checking object
+     * @return true if contains, false if it's not
+     */
+    public boolean contains(E value) {
+        for (E element : container) {
+            if (value.equals(element)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
