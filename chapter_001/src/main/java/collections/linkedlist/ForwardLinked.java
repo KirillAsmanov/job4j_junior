@@ -66,22 +66,26 @@ public class ForwardLinked<T> implements Iterable<T> {
 
     /**
      * Deletes last input element in list
+     * @return deleted element
      */
-    public void deleteLast() {
+    public T deleteLast() {
         if (head == null) {
             throw new NoSuchElementException();
         }
+        T deleted = head.value;
         if (head.next != null) {
             head = head.next;
         } else {
             head = null;
         }
+        return deleted;
     }
 
     /**
      * Deletes first input element in list
+     * @return deleted element
      */
-    public void deleteFirst() {
+    public T deleteFirst() {
         if (head == null) {
             throw new NoSuchElementException();
         }
@@ -89,7 +93,9 @@ public class ForwardLinked<T> implements Iterable<T> {
         while (tail.next.next != null) {
             tail = tail.next;
         }
+        T deleted = tail.next.value;
         tail.next = null;
+        return deleted;
     }
 
     /**
