@@ -103,10 +103,11 @@ public class SimpleLinkedList<E> implements Iterable<E> {
     /**
      * Remove first element on list.
      */
-    public void removeFirst() {
+    public E removeFirst() {
         if (firstNode.getNext() == null) {
             throw new NoSuchElementException();
         }
+        E deleted = lastNode.getPrevious().getElement();
         if (size > 1) {
             firstNode.getNext().getNext().setPrevious(null);
             firstNode.setNext(firstNode.getNext().getNext());
@@ -115,15 +116,17 @@ public class SimpleLinkedList<E> implements Iterable<E> {
         }
         size--;
         modCount++;
+        return deleted;
     }
 
     /**
      * Remove last element on list
      */
-    public void removeLast() {
+    public E removeLast() {
         if (firstNode.getNext() == null) {
             throw new NoSuchElementException();
         }
+        E deleted = lastNode.getPrevious().getElement();
         if (size > 1) {
             lastNode.getPrevious().getPrevious().setNext(null);
             lastNode.setPrevious(lastNode.getPrevious().getPrevious());
@@ -132,6 +135,7 @@ public class SimpleLinkedList<E> implements Iterable<E> {
         }
         size--;
         modCount++;
+        return deleted;
     }
 
     /**
