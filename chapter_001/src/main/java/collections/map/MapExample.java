@@ -13,10 +13,9 @@ public class MapExample {
         userMap.put(first, "value1");
         userMap.put(second, "value2");
         System.out.println(first.equals(second)); // true
-        System.out.println(first.hashCode() == second.hashCode()); // false
+        System.out.println(first.hashCode() == second.hashCode()); // true
         System.out.println(userMap);
-        // Несмотря на то, что по методу equals() объекты считаются равными, их ссылки и, соответственно, hashcode
-        // будут различными. Это означает, что карта распихает их по разным bucket'ам, соответствующим их хэшкодам, и
-        // значения никак не будут пересекаться
+        // В данном случае переопределены оба метода. Карта видит, что два объекта имеют один хэшкод и равны по
+        // методу equals() и производит перезапись значений.
     }
 }
