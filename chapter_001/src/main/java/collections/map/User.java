@@ -1,6 +1,7 @@
 package collections.map;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 /**
  * 1. Создать модель User [#281950]
@@ -8,6 +9,7 @@ import java.util.Calendar;
  * @author Kirill Asmanov
  * @since 07.05.2020
  */
+@SuppressWarnings("CheckStyle")
 public class User {
     private final String name;
     private final int children;
@@ -31,9 +33,8 @@ public class User {
         return birthday;
     }
 
-
-    @Override
+/* @Override
     public String toString() {
-        return "User{" + "name='" + name + '\'' + ", children=" + children + ", birthday=" + birthday + '}';
-    }
+        return "User{" + "name='" + name + '\'' + ", children=" + children + '}';
+    }*/
 }
