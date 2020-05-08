@@ -32,7 +32,7 @@ public class User {
     public Calendar getBirthday() {
         return birthday;
     }
-/*
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -42,11 +42,14 @@ public class User {
                 Objects.equals(name, user.name) &&
                 Objects.equals(birthday, user.birthday);
     }
-*/
+
+   /*
     @Override
     public int hashCode() {
         return Objects.hash(name, children, birthday);
     }
+    */
+
 /* @Override
     public String toString() {
         return "User{" + "name='" + name + '\'' + ", children=" + children + '}';
