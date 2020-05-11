@@ -21,9 +21,6 @@ public class SimpleHashMap<K, V> implements Iterable<SimpleHashMap.Entry<K, V>> 
      * @return true when insert complete, false when not.
      */
     public boolean insert(K key, V value) {
-        if (value == null) {
-            return false;
-        }
         if (size >= loadFactor * table.length) {
             expandTable();
         }
@@ -34,7 +31,7 @@ public class SimpleHashMap<K, V> implements Iterable<SimpleHashMap.Entry<K, V>> 
             size++;
             modCount++;
             return true;
-        } else if (key.equals(foundEntry.key) && (!value.equals(foundEntry.value))) {
+        } else if (key.equals(foundEntry.key)) {
             foundEntry.value = value;
             modCount++;
             return true;
