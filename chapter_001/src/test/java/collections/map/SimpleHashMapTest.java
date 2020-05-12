@@ -73,20 +73,20 @@ public class SimpleHashMapTest {
         assertEquals(simpleHashMap.get(new User("second", 1, null)), "second");
     }
 
-    @Test (expected = NoSuchElementException.class)
+    @Test
     public void whenInsertFewElementsAndGetUnexisted() {
         SimpleHashMap<User, String> simpleHashMap = new SimpleHashMap<>();
         User first = new User("first", 1, null);
         User second = new User("second", 1, null);
         simpleHashMap.insert(first, "first");
         simpleHashMap.insert(second, "second");
-        simpleHashMap.get(new User("UNEXISTED", 1, null));
+        assertNull(simpleHashMap.get(new User("UNEXISTED", 1, null)));
     }
 
-    @Test (expected = NoSuchElementException.class)
+    @Test
     public void whenGetOnEmptyMap() {
         SimpleHashMap<User, String> simpleHashMap = new SimpleHashMap<>();
-        simpleHashMap.get(new User("first", 1, null));
+        assertNull(simpleHashMap.get(new User("first", 1, null)));
     }
 
     @Test

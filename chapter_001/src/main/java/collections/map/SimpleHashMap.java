@@ -46,29 +46,29 @@ public class SimpleHashMap<K, V> implements Iterable<SimpleHashMap.Entry<K, V>> 
      * Get value from map by key
      * @param key key
      * @return value in pair
-     * @throws NoSuchElementException - when key isn't associated with map
      */
     public V get(K key) {
         int entryHash = hash(key);
         Entry<K, V> foundEntry = getEntry(entryHash);
-        if (foundEntry == null) {
-            throw new NoSuchElementException();
+        if (foundEntry == null || !key.equals(foundEntry.key)) {
+            return null;
+        } else {
+            return foundEntry.value;
         }
-        return foundEntry.value;
     }
 
     /**
      * Delete pair key-value from map
      * @param key - key of deleted pair
      * @return true when delete complete, false when it's not
-     * @throws NoSuchElementException when map is empty
      */
     public boolean delete(K key) {
         if (size == 0) {
             throw new NoSuchElementException();
         }
         int entryHash = hash(key);
-        if (getEntry(entryHash) == null) {
+        Entry<K, V> foundEntry = getEntry(entryHash);
+        if (foundEntry == null || !key.equals(foundEntry.key)) {
             return false;
         } else {
             table[indexFor(entryHash, table.length)] = null;
