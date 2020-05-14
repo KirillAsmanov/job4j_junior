@@ -1,6 +1,6 @@
 package inputoutput;
 
-import java.io.BufferedReader;
+import java.io.*;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +28,25 @@ public class LogFilter {
         return lines;
     }
 
-    public static void main(String[] args) {
-        List<String> log = filter("log.txt");
-        for (String s : log) {
-            System.out.println(s);
+    /**
+     * Write strings in list into file
+     * @param log list of strings
+     * @param file name of file to output
+     */
+    public static void save(List<String> log, String file) {
+        try (PrintWriter out = new PrintWriter(
+                new BufferedOutputStream(
+                        new FileOutputStream(file)
+                ))) {
+            for (String s : log) {
+                out.write(s + System.lineSeparator());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        save(filter("log.txt"), "404.txt");
     }
 }
