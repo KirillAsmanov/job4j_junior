@@ -14,30 +14,29 @@ public class ChangeReporter {
      * @return Report with info about list modifications
      */
     public Report createReport(List<Element> baseList, List<Element> changedList) {
-        ArrayList<Element> added = new ArrayList<>(changedList);
-        ArrayList<Element> deleted = new ArrayList<>(baseList);
-        ArrayList<Element> modified = new ArrayList<>();
-        for (Element changedEl : changedList) {
-            if (!deleted.remove(changedEl)) {
-                for (int i = 0; i < deleted.size(); i++) {
-                    if (changedEl.id.hashCode() == deleted.get(i).id.hashCode()) {
-                        modified.add(deleted.remove(i));
-                        break;
-                    }
+        Report rsl = new Report();
+        if (baseList.hashCode() == changedList.hashCode()) { // проверяем списки на равенство
+            return rsl;
+        }
+        HashMap<String, Element> baseMap = new HashMap<>();
+        for (Element e : baseList) {
+            baseMap.put(e.id, e);
+        }
+
+        for (Element e : changedList) {
+            Element foundElement = baseMap.get(e.id);
+            if (foundElement != null) {
+                if (foundElement.name.equals(e.name)) {
+                    baseMap.remove(e.id);
+                } else {
+                    rsl.modified.add(baseMap.remove(e.id));
                 }
+            } else {
+                rsl.added.add(e);
             }
         }
-        for (Element baseEl : baseList) {
-            if (!added.remove(baseEl)) {
-                for (int i = 0; i < added.size(); i++) {
-                    if (baseEl.id.hashCode() == added.get(i).id.hashCode()) {
-                        added.remove(i);
-                        break;
-                    }
-                }
-            }
-        }
-        return new Report(added, modified, deleted);
+        rsl.deleted = new ArrayList<>(baseMap.values());
+        return rsl;
     }
 
 
@@ -103,6 +102,12 @@ public class ChangeReporter {
         List<Element> modified;
         List<Element> deleted;
 
+        public Report() {
+            this.added = new ArrayList<>();
+            this.modified = new ArrayList<>();
+            this.deleted = new ArrayList<>();
+        }
+
         public Report(List<Element> added, List<Element> modified, List<Element> deleted) {
             this.added = added;
             this.modified = modified;
@@ -140,14 +145,13 @@ public class ChangeReporter {
     public static void main(String[] args) {
         ArrayList<Element> prev = new ArrayList<>();
         prev.add(new Element("1", "A"));
-        prev.add(new Element("1", "B"));
+        prev.add(new Element("3", "A"));
         prev.add(new Element("2", "A"));
-        prev.add(new Element("1", "A"));
 
         ArrayList<Element> current = new ArrayList<>();
+        current.add(new Element("4", "A"));
         current.add(new Element("3", "A"));
-        current.add(new Element("2", "B"));
-        current.add(new Element("1", "A"));
+        current.add(new Element("1", "B"));
 
         ChangeReporter cr = new ChangeReporter();
         System.out.println("Previous list: " + prev);
