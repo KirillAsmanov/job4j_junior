@@ -45,13 +45,6 @@ public class TreeTest {
         );
     }
 
-    @Test (expected = NullPointerException.class)
-    public void whenAddNullElementThenNPE() {
-        Tree<Integer> tree = new Tree<>(1);
-        tree.add(1, 2);
-        tree.add(1, null);
-    }
-
     @Test
     public void whenCreateBinaryTreeThenTrue() {
         Tree<Integer> tree = new Tree<>(1);
