@@ -31,7 +31,7 @@ public class Config {
         StringJoiner out = new StringJoiner(System.lineSeparator());
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             read.lines().filter(
-                    l -> l != null && !l.startsWith("##") && l.trim().length() != 0
+                    l -> l != null && !l.startsWith("#") && l.trim().length() != 0
             ).forEach(l -> {
                 String[] strings = l.split("=");
                 values.put(strings[0], strings[1]);
