@@ -23,44 +23,19 @@ public class Analyze {
         if (lines.isEmpty()) {
             return;
         }
-        boolean isAvailableNow;
-        boolean isAvailablePrev = isActive(lines.get(0)[0]);
+        boolean isAvailable = true;
         StringBuilder unavailableDiapasons = new StringBuilder();
-        int periodCounter = 0;
-        for (int i = 1; i < lines.size(); i++) {
-            isAvailableNow = isActive(lines.get(i)[0]);
-            if (i == 1) { // Проверяем первый элемент
-                if (!isAvailableNow && !isAvailablePrev) {
-                    unavailableDiapasons.append(lines.get(i - 1)[1]);
-                    periodCounter++;
-                } else if (isAvailableNow && !isAvailablePrev) {
-                    unavailableDiapasons.append("--:--:--;");
-                    unavailableDiapasons.append(lines.get(i)[1]);
-                    periodCounter += 2;
-                }
-            } else if (i == lines.size() - 1) { // Проверяем последний
-                if (!isAvailableNow && !isAvailablePrev) {
-                    unavailableDiapasons.append(lines.get(i)[1]);
-                    periodCounter++;
-                } else if (!isAvailableNow && isAvailablePrev) {
-                    unavailableDiapasons.append(lines.get(i)[1]);
-                    unavailableDiapasons.append(";--:--:--");
-                    periodCounter += 2;
-                }
-            } else { // Любой другой
-                if ((isAvailablePrev && !isAvailableNow) || (!isAvailablePrev && isAvailableNow)) {
-                    unavailableDiapasons.append(lines.get(i)[1]);
-                    periodCounter++;
-                }
+        for (String[] line : lines) {
+            if (isAvailable && !isActive(line[0])) {
+                isAvailable = isActive(line[0]);
+                unavailableDiapasons.append(line[1]).append(";");
+            } else if (!isAvailable && isActive(line[0])) {
+                isAvailable = isActive(line[0]);
+                unavailableDiapasons.append(line[1]).append(System.lineSeparator());
             }
-
-            if (periodCounter == 1) {
-                unavailableDiapasons.append(";");
-            } else if (periodCounter == 2) {
-                unavailableDiapasons.append(System.lineSeparator());
-                periodCounter = 0;
-            }
-            isAvailablePrev = isAvailableNow;
+        }
+        if (unavailableDiapasons.lastIndexOf(";") == unavailableDiapasons.length() - 1) {
+            unavailableDiapasons.append("--:--:--");
         }
         writeToFile(unavailableDiapasons.toString(), target);
     }
