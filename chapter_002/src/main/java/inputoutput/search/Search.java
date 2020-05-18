@@ -18,8 +18,11 @@ import static java.nio.file.FileVisitResult.*;
  */
 public class Search {
     public static void main(String[] args) throws IOException {
-        Path start = Paths.get("C:\\projects\\job4j_junior");
-        search(start, "txt").forEach(System.out::println);
+        if (args.length < 2) {
+            throw new IllegalArgumentException("Root folder is null. Usage java -jar search.jar ROOT_FOLDER FILE_EXTENSION");
+        }
+        Path start = Paths.get(args[0]);
+        search(start, args[1]).forEach(System.out::println);
     }
 
     /**
