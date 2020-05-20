@@ -10,34 +10,50 @@ import java.util.*;
  */
 public class Analyze {
     /**
-     * Adds to file info about unavailable server periods
+     * Reads log file and adds to source file info about unavailable server periods
      * @param source address of log file
      * @param target address of target file
      */
-    public void unavailable(String source, String target) {
-        List<String[]> lines = new ArrayList<>();
-        readFromFile(source).forEach(l -> {
-            String[] strings = l.split("\\s+");
-            lines.add(strings);
-        });
-        if (lines.isEmpty()) {
-            return;
-        }
-        boolean isAvailable = true;
-        StringBuilder unavailableDiapasons = new StringBuilder();
-        for (String[] line : lines) {
-            if (isAvailable && !isActive(line[0])) {
-                isAvailable = isActive(line[0]);
-                unavailableDiapasons.append(line[1]).append(";");
-            } else if (!isAvailable && isActive(line[0])) {
-                isAvailable = isActive(line[0]);
-                unavailableDiapasons.append(line[1]).append(System.lineSeparator());
+    public void createUnavailableLog(String source, String target) {
+        var state = new Object() { // Обертка для того, чтобы значение доступности можно было бы использовать в stream
+            boolean available = true;
+            public boolean isAvailable() {
+                return available;
             }
+            public void setAvailable(boolean available) {
+                this.available = available;
+            }
+        };
+        try (BufferedReader in = new BufferedReader(new FileReader(source))) {
+            in.lines()                          // создаем поток строк из файла лога
+            .filter(s -> !s.isBlank())          // убираем пустые строки из потока
+            .map(s -> s.split("\\s+"))    // приводим его к виду массива слов
+            .filter(s -> {                      // убираем строки, не содержащие в первом слове кода ошибки
+                try {
+                    Integer.parseInt(s[0]);
+                } catch (NumberFormatException | NullPointerException e) {
+                    return false;
+                }
+                return true;
+            }).map(s -> {                        // заполняем только те строки, которые являются контрольными точками
+                String result = "";
+                if (state.isAvailable() && !isActive(s[0])) {
+                    state.setAvailable(isActive(s[0]));
+                    result = s[1] + ";";
+                } else if (!state.isAvailable() && isActive(s[0])) {
+                    state.setAvailable(isActive(s[0]));
+                    result = s[1] + System.lineSeparator();
+                }
+                return result;
+            }).filter(s -> !s.isBlank())           // убираем пустые строки, не являющиеся контрольными точками
+            .forEach(s -> writeToFile(s, target)); // записывем все элементы потока в файл
+
+            if (!state.isAvailable()) {
+                writeToFile("--:--:--", target);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (unavailableDiapasons.lastIndexOf(";") == unavailableDiapasons.length() - 1) {
-            unavailableDiapasons.append("--:--:--");
-        }
-        writeToFile(unavailableDiapasons.toString(), target);
     }
 
     /**
@@ -51,38 +67,18 @@ public class Analyze {
     }
 
     /**
-     * Read log lines into list
-     * @param source address of log file
-     * @return list of log lines
-     */
-    private List<String> readFromFile(String source) {
-        List<String> lines = new ArrayList<>();
-        try (BufferedReader in = new BufferedReader(new FileReader(source))) {
-            in.lines().filter(l -> {
-                try { // проверяем перед записью на всякий случай то, является ли первое "слово" в логе числом
-                    Integer.parseInt(l.split("\\s+")[0]);
-                } catch (NumberFormatException | NullPointerException e) {
-                    return false;
-                }
-                return true;
-            }).forEach(lines::add);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return lines;
-    }
-
-    /**
      * Write unavailability report on file
      * @param diapasonString string with report
      * @param target address of report file
      */
     private void writeToFile(String diapasonString, String target) {
-        try (PrintWriter out = new PrintWriter(
-                new BufferedOutputStream(
-                        new FileOutputStream(target)
-                ))) {
-                out.write(diapasonString);
+        try {
+            File log = new File(target);
+            FileWriter fileWriter = new FileWriter(log, true);
+            BufferedWriter out = new BufferedWriter(fileWriter);
+
+            out.write(diapasonString);
+            out.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,6 +86,6 @@ public class Analyze {
 
     public static void main(String[] args) {
        Analyze an = new Analyze();
-       an.unavailable("./chapter_002/data/server.log", "./chapter_002/data/unavailable.csv");
+       an.createUnavailableLog("./chapter_002/data/server.log", "./chapter_002/data/unavailable.csv");
     }
 }

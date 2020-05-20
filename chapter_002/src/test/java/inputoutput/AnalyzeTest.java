@@ -31,7 +31,7 @@ public class AnalyzeTest {
             out.println(write);
         }
         Analyze analyze = new Analyze();
-        analyze.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
+        analyze.createUnavailableLog(source.getAbsolutePath(), target.getAbsolutePath());
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(target))) {
             in.lines().forEach(rsl::append);
@@ -53,7 +53,7 @@ public class AnalyzeTest {
             out.println(write);
         }
         Analyze analyze = new Analyze();
-        analyze.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
+        analyze.createUnavailableLog(source.getAbsolutePath(), target.getAbsolutePath());
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(target))) {
             in.lines().forEach(rsl::append);
@@ -75,7 +75,7 @@ public class AnalyzeTest {
             out.println(write);
         }
         Analyze analyze = new Analyze();
-        analyze.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
+        analyze.createUnavailableLog(source.getAbsolutePath(), target.getAbsolutePath());
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(target))) {
             in.lines().forEach(l -> rsl.append(l).append(System.lineSeparator()));
@@ -100,7 +100,7 @@ public class AnalyzeTest {
             out.println(write);
         }
         Analyze analyze = new Analyze();
-        analyze.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
+        analyze.createUnavailableLog(source.getAbsolutePath(), target.getAbsolutePath());
         StringBuilder rsl = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(target))) {
             in.lines().forEach(l -> rsl.append(l).append(System.lineSeparator()));
