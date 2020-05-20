@@ -8,13 +8,6 @@ public class Directory {
      * @param file - path to directory
      */
     public void getAllFiles(File file) {
-        if (!file.exists()) {
-            throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
-        }
-        if (!file.isDirectory()) {
-            throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
-        }
-
         for (File subfile : file.listFiles()) {
             if (subfile.isDirectory()) {
                 getAllFiles(subfile);
@@ -26,6 +19,12 @@ public class Directory {
 
     public static void main(String[] args) {
         File file = new File("c:\\projects\\job4j_junior");
+        if (!file.exists()) {
+            throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
+        }
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
+        }
         Directory dir = new Directory();
         dir.getAllFiles(file);
 
