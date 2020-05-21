@@ -1,5 +1,8 @@
 package socket.server;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,6 +15,8 @@ import java.util.StringJoiner;
  * @author Kirill Asmanov
  */
 public class EchoServer {
+
+    private static final Logger LOG = LogManager.getLogger(EchoServer.class.getName());
     /**
      * Handle the input from client
      * @param in input stream
@@ -36,10 +41,12 @@ public class EchoServer {
         if (response == null) {
             out.write("HTTP/1.1 400 ERROR\r\n\r\n".getBytes());
             out.write("Cannot handle empty response".getBytes());
+            LOG.warn("Cannot handle empty response");
             return;
         }
         out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
         out.write(getMessage(response).getBytes());
+        LOG.info("Response send");
     }
 
     /**
@@ -68,25 +75,24 @@ public class EchoServer {
 
     public static void main(String[] args) throws IOException {
         EchoServer echo = new EchoServer();
-        try (ServerSocket server = new ServerSocket(8080)) {
-            System.out.println("Server started!");
+        try (ServerSocket server = new ServerSocket(9000)) {
+            LOG.info("Server is started!");
             boolean active = true;
             while (active) {
                 Socket socket = server.accept();
-                System.out.println("Client connected!");
+                LOG.info("Client connected!");
                 try (OutputStream out = socket.getOutputStream();
                      BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
                     String inputResponse = echo.inputHandler(in);
                     System.out.println(inputResponse);
 
-                    System.out.println("Get message:");
-                    System.out.println(echo.getMessage(inputResponse) + System.lineSeparator());
+                    LOG.info("Get message:" + echo.getMessage(inputResponse) + System.lineSeparator());
 
                     echo.outputHandler(inputResponse, out);
                     active = echo.checkSwitchCommand(inputResponse);
                 }
             }
-            System.out.println("Server stopped!");
+            LOG.info("Server stopped!");
         }
     }
 }
