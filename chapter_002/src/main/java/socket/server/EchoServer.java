@@ -90,9 +90,13 @@ public class EchoServer {
 
                     echo.outputHandler(inputResponse, out);
                     active = echo.checkSwitchCommand(inputResponse);
+                } catch (Exception e) {
+                    LOG.error("Catch exception: ", e);
                 }
             }
             LOG.info("Server stopped!");
+        } catch (Exception e) {
+            LOG.error("Catch exception: ", e);
         }
     }
 }
