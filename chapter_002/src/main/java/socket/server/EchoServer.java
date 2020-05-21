@@ -1,7 +1,7 @@
 package socket.server;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -16,7 +16,7 @@ import java.util.StringJoiner;
  */
 public class EchoServer {
 
-    private static final Logger LOG = LogManager.getLogger(EchoServer.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(EchoServer.class.getName());
     /**
      * Handle the input from client
      * @param in input stream
