@@ -13,10 +13,10 @@ public class ConsoleChat {
     private final String source;
     private final String target;
 
-    private enum commands {
-        СТОП,
-        ПРОДОЛЖИТЬ,
-        ЗАКОНЧИТЬ;
+    private enum Commands {
+        STOP,
+        CONTINUE,
+        CLOSE;
     }
 
     public ConsoleChat(String source, String target) {
@@ -49,13 +49,13 @@ public class ConsoleChat {
             }
             if (checkIsCommand(input)) {
                 String phrase = "";
-                if (input.equalsIgnoreCase(String.valueOf(commands.СТОП))) {
+                if (input.equalsIgnoreCase(String.valueOf(Commands.STOP))) {
                     phrase = "Работа приостановлена.";
                     isPaused = true;
-                } else if (input.equalsIgnoreCase(String.valueOf(commands.ПРОДОЛЖИТЬ))) {
+                } else if (input.equalsIgnoreCase(String.valueOf(Commands.CONTINUE))) {
                     phrase = "Работа возобновлена.";
                     isPaused = false;
-                } else if (input.equalsIgnoreCase(String.valueOf(commands.ЗАКОНЧИТЬ))) {
+                } else if (input.equalsIgnoreCase(String.valueOf(Commands.CLOSE))) {
                     phrase = "Работа завершена.";
                     isStopped = true;
                 }
@@ -74,7 +74,7 @@ public class ConsoleChat {
     private boolean checkIsCommand(String inputStr) {
         String input = inputStr.trim();
 
-        for (commands e : commands.values()) {
+        for (Commands e : Commands.values()) {
             if (input.equalsIgnoreCase(String.valueOf(e))) {
                 return true;
             }
