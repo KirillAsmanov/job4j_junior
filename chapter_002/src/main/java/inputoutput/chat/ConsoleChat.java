@@ -13,6 +13,12 @@ public class ConsoleChat {
     private final String source;
     private final String target;
 
+    private enum commands {
+        СТОП,
+        ПРОДОЛЖИТЬ,
+        ЗАКОНЧИТЬ;
+    }
+
     public ConsoleChat(String source, String target) {
         this.source = source;
         this.target = target;
@@ -26,6 +32,7 @@ public class ConsoleChat {
         boolean isStopped = false;
         boolean isPaused = false;
 
+        List<String> logs = new ArrayList<>();
         Scanner in = new Scanner(System.in);
         System.out.println("Начните общение, либо введите команды: " + System.lineSeparator()
                 + "-  СТОП чтобы бот перестал отвечать," + System.lineSeparator()
@@ -34,44 +41,45 @@ public class ConsoleChat {
         );
         while (!isStopped) {
             String input = in.nextLine();
-            logWrite(input);
+            logs.add(createLogRecord(input));
             if (!checkIsCommand(input) && !isPaused) {
                 String phrase = generatePhrase();
                 System.out.println(phrase);
-                logWrite(phrase);
+                logs.add(createLogRecord(phrase));
             }
             if (checkIsCommand(input)) {
-                if (input.equalsIgnoreCase("СТОП")) {
-                    String phrase = "Работа приостановлена.";
-                    System.out.println(phrase);
-                    logWrite(phrase);
+                String phrase = "";
+                if (input.equalsIgnoreCase(String.valueOf(commands.СТОП))) {
+                    phrase = "Работа приостановлена.";
                     isPaused = true;
-                } else if (input.equalsIgnoreCase("ПРОДОЛЖИТЬ")) {
-                    String phrase = "Работа возобновлена.";
-                    System.out.println(phrase);
-                    logWrite(phrase);
+                } else if (input.equalsIgnoreCase(String.valueOf(commands.ПРОДОЛЖИТЬ))) {
+                    phrase = "Работа возобновлена.";
                     isPaused = false;
-                } else if (input.equalsIgnoreCase("ЗАКОНЧИТЬ")) {
-                    String phrase = "Работа завершена.";
-                    System.out.println(phrase);
-                    logWrite(phrase);
+                } else if (input.equalsIgnoreCase(String.valueOf(commands.ЗАКОНЧИТЬ))) {
+                    phrase = "Работа завершена.";
                     isStopped = true;
                 }
+                System.out.println(phrase);
+                logs.add(createLogRecord(phrase));
             }
         }
+        logWrite(logs);
     }
 
     /**
      * Check is string is command or another message
-     * @param input string
+     * @param inputStr string value
      * @return true if is command
      */
-    private boolean checkIsCommand(String input) {
-        String command = input.trim();
-        return command.equalsIgnoreCase("СТОП")
-                || command.equalsIgnoreCase("ПРОДОЛЖИТЬ")
-                || command.equalsIgnoreCase("ЗАКОНЧИТЬ");
+    private boolean checkIsCommand(String inputStr) {
+        String input = inputStr.trim();
 
+        for (commands e : commands.values()) {
+            if (input.equalsIgnoreCase(String.valueOf(e))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -122,19 +130,30 @@ public class ConsoleChat {
     }
 
     /**
-     * writes log record into log file
-     * @param word writable record
+     * Create log record to DATE-TIME MESSAGE format
+     * @param message input message
+     * @return formatted record
      */
-    private void logWrite(String word) {
+    private String createLogRecord(String message) {
+        Date dateNow = new Date();
+        SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy-kk:mm:ss");
+        return formatForDateNow.format(dateNow) + " " + message + System.lineSeparator();
+    }
+
+    /**
+     * writes log record into log file
+     * @param logs list of a writable record
+     */
+    private void logWrite(List<String> logs) {
         try {
-            File log = new File(target);
-            FileWriter fileWriter = new FileWriter(log, true);
+            File logFile = new File(target);
+            FileWriter fileWriter = new FileWriter(logFile, true);
             BufferedWriter out = new BufferedWriter(fileWriter);
-            Date dateNow = new Date();
-            SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy-kk:mm:ss");
-            String record = formatForDateNow.format(dateNow) + " " + word + System.lineSeparator();
-            out.write(record);
-            out.close();
+
+            for (String record: logs) {
+                out.write(record);
+            }
+            out.close(); // закрываем поток
         } catch (Exception e) {
             e.printStackTrace();
         }
