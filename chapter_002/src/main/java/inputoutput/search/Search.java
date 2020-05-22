@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static java.nio.file.FileVisitResult.*;
 
@@ -40,17 +41,8 @@ public class Search {
         if (!Files.isDirectory(root)) {
             throw new IllegalArgumentException(String.format("Not directory %s", root.toString()));
         }
-        List<Path> foundFiles = new ArrayList<>();
-        SimpleFileVisitor fileVisitor = new SimpleFileVisitor() {
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                if (file.getFileName().toString().endsWith(ext)) {
-                    foundFiles.add(file);
-                }
-                return CONTINUE;
-            }
-        };
+        SearchFiles fileVisitor = new SearchFiles(p -> p.toFile().getName().endsWith(ext));
         Files.walkFileTree(root, fileVisitor);
-        return foundFiles;
+        return fileVisitor.getFoundFiles();
     }
 }
