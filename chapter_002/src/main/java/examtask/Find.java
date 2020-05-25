@@ -48,12 +48,8 @@ public class Find {
      * @param paths found paths
      */
     public void writeToFile(List<Path> paths) {
-        try {
-            File resultFile = new File(output);
-            FileWriter fileWriter = new FileWriter(resultFile, true);
-            BufferedWriter out = new BufferedWriter(fileWriter);
-
-
+        try (FileWriter fileWriter = new FileWriter(new File(output), true);
+             BufferedWriter out = new BufferedWriter(fileWriter);) {
             for (Path path: paths) {
                 out.write(path.toString() + System.lineSeparator());
             }
