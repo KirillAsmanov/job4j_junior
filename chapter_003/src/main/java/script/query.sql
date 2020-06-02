@@ -8,7 +8,7 @@ WHERE type.name = 'СЫР'
 -- 2. Написать запрос получения всех продуктов, у кого в имени есть слово "мороженное"
 
 SELECT * FROM product 
-WHERE product.name = 'мороженное'
+WHERE product.name LIKE 'мороженное'
 
 
 -- 3. Написать запрос, который выводит все продукты, срок годности которых заканчивается в следующем месяце.
@@ -19,8 +19,9 @@ WHERE product.expired_date BETWEEN now() AND ADDDATE(now(), Interval 1 MONTH)
 
 -- 4. Написать запрос, который выводит самый дорогой продукт.
 
-SELECT MAX(price) FROM product 
-
+SELECT *
+FROM product
+WHERE price = (SELECT MAX(price) FROM product)
 
 -- 5. Написать запрос, который выводит количество всех продуктов определенного типа.
 
