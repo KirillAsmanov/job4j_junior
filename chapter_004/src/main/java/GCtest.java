@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 import static com.carrotsearch.sizeof.RamUsageEstimator.sizeOf;
 
 public class GCtest {
@@ -40,10 +42,16 @@ public class GCtest {
         info(); */
 
         // Для активации GC:
-        for (int i = 0; i <= 4000; i++) {
-            new User();
-            System.out.print(i + " ");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("type run");
+        String cmd = sc.nextLine();
+        if (cmd.equals("run")) {
+            for (int i = 0; i <= 15000; i++) {
+                new User();
+                System.out.print(i + " ");
+            }
         }
+        String sd = sc.nextLine();
     }
  
     private static void info() {
