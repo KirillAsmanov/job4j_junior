@@ -1,4 +1,4 @@
 package cinema;
 
-public class Session3D implements Session{
+public class Session3D implements Session {
 }
