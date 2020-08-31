@@ -32,10 +32,11 @@ public class TextCache implements ICache<String> {
      */
     @Override
     public String getFromCache(String name) {
-        SoftReference<String> ref = cacheStore.get(name);
-        if (ref == null) {
-            return null;
-        }
-        return ref.get();
+        return cacheStore.get(name).get();
+    }
+
+    @Override
+    public boolean checkExist(String name) {
+        return cacheStore.containsKey(name);
     }
 }

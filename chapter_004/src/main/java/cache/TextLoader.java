@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
  * @author Kirill Asmanov
  */
 public class TextLoader implements Loader<String> {
-    ICache textCache;
+    ICache<String> textCache;
 
     public TextLoader(ICache textCache) {
         this.textCache = textCache;
@@ -39,8 +39,10 @@ public class TextLoader implements Loader<String> {
      */
     @Override
     public String loadData(String name) throws IOException {
-        String data = (String) textCache.getFromCache(name);
-        if (data == null) {
+        String data;
+        if (textCache.checkExist(name)) {
+            data = textCache.getFromCache(name);
+        } else {
             data = loadFromFile(name);
             System.out.println("(from file)");
             textCache.saveToCache(name, data);

@@ -7,4 +7,5 @@ package cache;
 public interface ICache<T> {
     void saveToCache(String name, T data);
     T getFromCache(String name);
+    boolean checkExist(String name);
 }
