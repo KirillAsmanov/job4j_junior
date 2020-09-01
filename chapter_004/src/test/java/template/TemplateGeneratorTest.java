@@ -16,7 +16,9 @@ public class TemplateGeneratorTest {
     public void produce() throws NotEnoughKeyException, MoreKeysThenNeedException {
         Generator testGen = new TemplateGenerator();
         HashMap<String, String> args = new HashMap<>();
-        String template = "Should work...";
+        String template = "I am a ${name}, Who are ${subject}?";
+        args.put("name", "Kirill");
+        args.put("subject", "you");
         String rsl = testGen.produce(template, args);
         assertThat(rsl, is("Work!"));
     }
@@ -25,7 +27,10 @@ public class TemplateGeneratorTest {
     public void whenMoreKeysThenNeeded() {
         Generator testGen = new TemplateGenerator();
         HashMap<String, String> args = new HashMap<>();
-        String template = "More keys";
+        String template = "I am a ${name}, Who are ${subject}? / More keys";
+        args.put("name", "Kirill");
+        args.put("subject", "you");
+        args.put("age", "22");
         try {
             testGen.produce(template, args);
             fail("MoreKeysThenNeedException expected");
@@ -38,7 +43,8 @@ public class TemplateGeneratorTest {
     public void whenNotEnoughKeysInMap() {
         Generator testGen = new TemplateGenerator();
         HashMap<String, String> args = new HashMap<>();
-        String template = "Not enough keys";
+        String template = "I am a ${name}, Who are ${subject}? / Not enough keys";
+        args.put("name", "Kirill");
         try {
             testGen.produce(template, args);
             fail("NotEnoughKeysException expected");

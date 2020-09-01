@@ -14,8 +14,10 @@ public class TemplateGenerator implements Generator {
      * Так как метод не нужно было реализовывать, для успешного прохождения тестов
      * были созданы искуственные ситуации-заглушки, при которых данные эксепшены падали бы:
      *
-     * 1. NotEnoughKeyException - падает в случае если в аргумент template передано "Not enough keys"
-     * 2. MoreKeysThenNeedException - падает в случае если в аргумент template передано "More keys"
+     * 1. NotEnoughKeyException - падает в случае если в аргумент template передано
+     * "I am a ${name}, Who are ${subject}? / Not enough keys"
+     * 2. MoreKeysThenNeedException - падает в случае если в аргумент template передано
+     * " I am a ${name}, Who are ${subject}? / More keys"
      * 3. Метод выполняется успешно и возвращает "Work!" - если в аргумент template передана любая другая строка
      *
      * @param template
@@ -27,9 +29,9 @@ public class TemplateGenerator implements Generator {
     @Override
     public String produce(String template, Map<String, String> args)
             throws NotEnoughKeyException, MoreKeysThenNeedException {
-        if (template.equals("More keys")) {
+        if (template.equals("I am a ${name}, Who are ${subject}? / More keys")) {
             throw new MoreKeysThenNeedException("More key then need in map");
-        } else if (template.equals("Not enough keys")) {
+        } else if (template.equals("I am a ${name}, Who are ${subject}? / Not enough keys")) {
             throw new NotEnoughKeyException("Not enough keys");
         }
         return "Work!";
