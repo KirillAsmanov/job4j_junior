@@ -42,9 +42,12 @@ public class TextLoader implements Loader<String> {
         String data;
         if (textCache.checkExist(name)) {
             data = textCache.getFromCache(name);
+            if (data == null) {
+                data = loadFromFile(name);
+                textCache.saveToCache(name, data);
+            }
         } else {
             data = loadFromFile(name);
-            System.out.println("(from file)");
             textCache.saveToCache(name, data);
         }
         return data;
