@@ -23,33 +23,23 @@ public class TemplateGeneratorTest {
         assertThat(rsl, is("Work!"));
     }
 
-    @Test
-    public void whenMoreKeysThenNeeded() {
+    @Test (expected = MoreKeysThenNeedException.class)
+    public void whenMoreKeysThenNeeded() throws NotEnoughKeyException, MoreKeysThenNeedException {
         Generator testGen = new TemplateGenerator();
         HashMap<String, String> args = new HashMap<>();
         String template = "I am a ${name}, Who are ${subject}? / More keys";
         args.put("name", "Kirill");
         args.put("subject", "you");
         args.put("age", "22");
-        try {
-            testGen.produce(template, args);
-            fail("MoreKeysThenNeedException expected");
-        } catch (Exception ex) {
-            assertThat(ex.getMessage(), containsString("More key then need in map"));
-        }
+        testGen.produce(template, args);
     }
 
-    @Test
-    public void whenNotEnoughKeysInMap() {
+    @Test (expected = NotEnoughKeyException.class)
+    public void whenNotEnoughKeysInMap() throws NotEnoughKeyException, MoreKeysThenNeedException {
         Generator testGen = new TemplateGenerator();
         HashMap<String, String> args = new HashMap<>();
         String template = "I am a ${name}, Who are ${subject}? / Not enough keys";
         args.put("name", "Kirill");
-        try {
-            testGen.produce(template, args);
-            fail("NotEnoughKeysException expected");
-        } catch (Exception ex) {
-            assertThat(ex.getMessage(), containsString("Not enough keys"));
-        }
+        testGen.produce(template, args);
     }
 }
